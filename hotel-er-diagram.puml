@@ -1,0 +1,85 @@
+@startuml
+
+skinparam backgroundColor #FEFEFE
+skinparam linetype ortho
+
+title Hotel Management System ER Diagram
+
+entity "user" as user {
+  + id : BIGINT <<PK>>
+  --
+  username : VARCHAR(50) <<UK>>
+  password : VARCHAR(100)
+  real_name : VARCHAR(50)
+  phone : VARCHAR(20)
+  email : VARCHAR(100)
+  role : VARCHAR(20)
+  create_time : DATETIME
+}
+
+entity "room_type" as room_type {
+  + id : BIGINT <<PK>>
+  --
+  name : VARCHAR(50)
+  description : VARCHAR(500)
+  price : DECIMAL(10,2)
+  bed_type : VARCHAR(20)
+  area : INT
+  capacity : INT
+  image : VARCHAR(255)
+  create_time : DATETIME
+}
+
+entity "room" as room {
+  + id : BIGINT <<PK>>
+  --
+  room_number : VARCHAR(20) <<UK>>
+  room_type_id : BIGINT <<FK>>
+  floor : INT
+  status : VARCHAR(20)
+  description : VARCHAR(500)
+  create_time : DATETIME
+}
+
+entity "customer" as customer {
+  + id : BIGINT <<PK>>
+  --
+  name : VARCHAR(50)
+  id_card : VARCHAR(20)
+  phone : VARCHAR(20)
+  gender : VARCHAR(10)
+  create_time : DATETIME
+}
+
+entity "booking" as booking {
+  + id : BIGINT <<PK>>
+  --
+  customer_id : BIGINT <<FK>>
+  room_id : BIGINT <<FK>>
+  user_id : BIGINT <<FK>>
+  check_in_date : DATE
+  check_out_date : DATE
+  status : VARCHAR(20)
+  total_price : DECIMAL(10,2)
+  remark : VARCHAR(500)
+  create_time : DATETIME
+}
+
+entity "message" as message {
+  + id : BIGINT <<PK>>
+  --
+  sender_role : VARCHAR(20)
+  sender_name : VARCHAR(50)
+  receiver_role : VARCHAR(20)
+  content : TEXT
+  is_read : TINYINT
+  session_id : VARCHAR(100)
+  create_time : DATETIME
+}
+
+room_type ||--o{ room : "1 : N"
+user      ||--o{ booking : "1 : N"
+customer  ||--o{ booking : "1 : N"
+room      ||--o{ booking : "1 : N"
+
+@enduml
